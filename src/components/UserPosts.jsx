@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
-import {Redirect} from 'react-router-dom'
+import {Redirect, Link} from 'react-router-dom'
+
 
 
 const baseURL = process.env.REACT_APP_BASE_URL || 'http://localhost:8000'
@@ -9,7 +10,8 @@ export default class UserPosts extends Component {
     super(props)
     this.state = {
       redirectLogin: false,
-      userPosts: []
+      userPosts: [],
+      postToUpdate: {}
     }
   }
 
@@ -91,12 +93,15 @@ export default class UserPosts extends Component {
       }
     })
   }
+  
 
   render() {
     return (
       <div>
         {this.state.redirectLogin ? (
           <Redirect to='/u/login' />
+        ) : this.state.redirectUpdate ? (
+          <Redirect to={`/p/update/${this.state.postToUpdate}`} />
         ) : (
           <div>
             {this.state.userPosts.map(post => {
@@ -106,9 +111,11 @@ export default class UserPosts extends Component {
                 <h1>{post.title}</h1>
                 <p>By: {post.created_by.username} at {post.created_at}</p>
                 <p>{post.body}</p>
-                <button onClick={() => {
 
-                }}>Update</button>
+                <Link to={`/p/update/${post.id}`}>
+                  <button>Update</button>
+                </Link>
+
                 <button onClick={() => {
                   this.handleDelete(post.id)
                   }}>Delete</button>
