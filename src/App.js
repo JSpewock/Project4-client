@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
-
+import Login from './components/Login'
+import SignUp from './components/Signup'
 
 const baseURL = process.env.REACT_APP_BASE_URL || 'http://localhost:8000'
 
@@ -42,6 +43,8 @@ export default class App extends Component {
   render() {
     return (
       <div>
+        <SignUp />
+        <Login />
         <h1>hi</h1>
         <div className="all-rants">
         {this.state.allRants.map(rant => {
