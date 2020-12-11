@@ -3,6 +3,7 @@ import Login from './components/Login'
 import SignUp from './components/Signup'
 import Rant from './components/Rant'
 import Index from './components/Index'
+import CreateForm from './components/CreateForm'
 import {BrowserRouter as Router, Route} from 'react-router-dom'
 
 const baseURL = process.env.REACT_APP_BASE_URL || 'http://localhost:8000'
@@ -15,6 +16,7 @@ export default class App extends Component {
       showOne: {}
     }
     this.getAllRants = this.getAllRants.bind(this)
+    this.killToken = this.killToken.bind(this)
   }
 
   componentDidMount() {
@@ -42,10 +44,15 @@ export default class App extends Component {
     })
   }
 
+  killToken() {
+    localStorage.removeItem('token')
+  }
+
   
   render() {
     return (
       <div>
+        <button onClick={this.killToken}>Kill token</button>
         <Router>
           <Route path='/' exact render={({match}) => (
             <Index allRants={this.state.allRants}/>
@@ -55,6 +62,7 @@ export default class App extends Component {
           )} />
           <Route path='/u/login' component={Login} />
           <Route path='/u/signup' component={SignUp} />
+          <Route path='/p/create' component={CreateForm} />
         </Router>
       </div>
     )
