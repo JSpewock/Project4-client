@@ -40,6 +40,7 @@ export default class App extends Component {
         rant.created_by.password = ''
         rant.created_by.id = '?'
         rants.push(rant)
+        return ''
       })
       this.setState({allRants: rants})
     })

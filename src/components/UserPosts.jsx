@@ -8,7 +8,7 @@ export default class UserPosts extends Component {
   constructor(props) {
     super(props)
     this.state = {
-      redirect: false,
+      redirectLogin: false,
       userPosts: []
     }
   }
@@ -29,17 +29,19 @@ export default class UserPosts extends Component {
         if (check.status.code === 401) {
           //if the token in invalid remove it and redirect
           localStorage.removeItem('token')
-          this.setState({redirect: true})
+          this.setState({redirectLogin: true})
         } else {
-          this.setState({redirect: false})
+          this.setState({redirectLogin: false})
+        }
+      }).then(res => {
+        //if the token is valid, get all the posts
+        if (!this.state.redirectLogin) {
+          this.getUserPosts()
         }
       })
     } else {
       //if there is no token, redirect
-      this.setState({redirect: true})
-    }
-    if (!this.state.redirect) {
-      this.getUserPosts()
+      this.setState({redirectLogin: true})
     }
   }
 
@@ -58,6 +60,7 @@ export default class UserPosts extends Component {
         rant.created_by.password = ''
         rant.created_by.id = '?'
         userRants.push(rant)
+        return ''
       })
       this.setState({userPosts: userRants})
     })
@@ -76,13 +79,13 @@ export default class UserPosts extends Component {
       if (data.status.code === 401) {
         //if the token in invalid remove it and redirect
         localStorage.removeItem('token')
-        this.setState({redirect: true})
+        this.setState({redirectLogin: true})
       } else {
         const fakeArray = [...this.state.userPosts]
         const findIndex = fakeArray.findIndex(post => post.id === id)
         fakeArray.splice(findIndex, 1)
         this.setState({
-          redirect: false,
+          redirectLogin: false,
           userPosts: fakeArray  
         })
       }
@@ -92,18 +95,20 @@ export default class UserPosts extends Component {
   render() {
     return (
       <div>
-        {this.state.redirect ? (
+        {this.state.redirectLogin ? (
           <Redirect to='/u/login' />
         ) : (
           <div>
             {this.state.userPosts.map(post => {
-              // console.log(post)
+            
               return(
               <div key={post.id}>
                 <h1>{post.title}</h1>
                 <p>By: {post.created_by.username} at {post.created_at}</p>
                 <p>{post.body}</p>
-                <button>Update</button>
+                <button onClick={() => {
+
+                }}>Update</button>
                 <button onClick={() => {
                   this.handleDelete(post.id)
                   }}>Delete</button>
