@@ -4,20 +4,17 @@ import {Redirect} from 'react-router-dom'
 
 const baseURL = process.env.REACT_APP_BASE_URL || 'http://localhost:8000'
 
-
-export default class CreateForm extends Component {
+export default class UserPosts extends Component {
   constructor(props) {
     super(props)
     this.state = {
-      title: '',
-      body: '',
-      redirect: false  
+      redirect: false,
+      userPosts: []
     }
-    this.handleChange = this.handleChange.bind(this)
-    this.handleSubmit = this.handleSubmit.bind(this)
   }
 
   componentDidMount() {
+    //jwt validity check
     const token = localStorage.getItem('token')
     if (token) {
       fetch(baseURL + '/', {
@@ -41,29 +38,28 @@ export default class CreateForm extends Component {
       //if there is no token, redirect
       this.setState({redirect: true})
     }
-    
+    if (!this.state.redirect) {
+      this.getUserPosts()
+    }
   }
 
-  handleChange(event) {
-    this.setState({[event.target.name] : event.target.value})
-  }
-
-  handleSubmit(event) {
-    event.preventDefault()
-    fetch(baseURL + '/rantz/', {
-      method: "POST",
-      body: JSON.stringify({
-        title: this.state.title,
-        body: this.state.body
-      }),
+  getUserPosts() {
+    fetch(baseURL + '/rantz/myposts', {
+      method: "GET",
       headers: {
         'Content-Type': 'application/json',
         'x-access-token': localStorage.getItem('token')
       }
     }).then(res => {
       return res.json()
-    }).then(response => {
-      console.log(response)
+    }).then(data => {
+      const userRants = []
+      data.data.map(rant => {
+        rant.created_by.password = ''
+        rant.created_by.id = '?'
+        userRants.push(rant)
+      })
+      this.setState({userPosts: userRants})
     })
   }
 
@@ -73,13 +69,20 @@ export default class CreateForm extends Component {
         {this.state.redirect ? (
           <Redirect to='/u/login' />
         ) : (
-          <form onSubmit={this.handleSubmit}>
-            <label htmlFor='title'>Title:</label>
-            <input name='title' type='text' onChange={this.handleChange} value={this.state.title} />
-            <label htmlFor='body'>Body:</label>
-            <input name='body' type='text' onChange={this.handleChange} value={this.state.body} />
-            <input type='submit' value='Add Post' />
-          </form>
+          <div>
+            {this.state.userPosts.map(post => {
+              // console.log(post)
+              return(
+              <div key={post.id}>
+                <h1>{post.title}</h1>
+                <p>By: {post.created_by.username} at {post.created_at}</p>
+                <p>{post.body}</p>
+                <button>Update</button>
+                <button>Delete</button>
+              </div>
+              )
+            })}
+          </div>
         )}
       </div>
     )

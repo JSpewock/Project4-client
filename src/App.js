@@ -4,6 +4,7 @@ import SignUp from './components/Signup'
 import Rant from './components/Rant'
 import Index from './components/Index'
 import CreateForm from './components/CreateForm'
+import UserPosts from './components/UserPosts'
 import {BrowserRouter as Router, Route} from 'react-router-dom'
 
 const baseURL = process.env.REACT_APP_BASE_URL || 'http://localhost:8000'
@@ -63,6 +64,7 @@ export default class App extends Component {
           <Route path='/u/login' component={Login} />
           <Route path='/u/signup' component={SignUp} />
           <Route path='/p/create' component={CreateForm} />
+          <Route path='/u/myposts' component={UserPosts} />
         </Router>
       </div>
     )
