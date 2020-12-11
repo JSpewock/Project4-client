@@ -57,16 +57,23 @@ export default class App extends Component {
       <div>
         <button onClick={this.killToken}>Kill token</button>
         <Router>
+          {/* index route */}
           <Route path='/' exact render={({match}) => (
             <Index allRants={this.state.allRants}/>
           )} />
+          {/* show route */}
           <Route path='/s/:rantId' render={({match}) => (
             <Rant rantId={match.params.rantId}/>
           )} />
+          {/* login route */}
           <Route path='/u/login' component={Login} />
+          {/* sign up route */}
           <Route path='/u/signup' component={SignUp} />
+          {/* create new post route  */}
           <Route path='/p/create' component={CreateForm} />
+          {/* show user posts route  */}
           <Route path='/u/myposts' component={UserPosts} />
+          {/* update route  */}
           <Route path='/p/update/:postId' render={({match}) => (
               <UpdateForm postId={match.params.postId}/>
             )} />
