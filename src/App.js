@@ -47,14 +47,14 @@ export default class App extends Component {
     return (
       <div>
         <Router>
-          <SignUp />
-          <Login />
           <Route path='/' exact render={({match}) => (
             <Index allRants={this.state.allRants}/>
           )} />
           <Route path='/s/:rantId' render={({match}) => (
             <Rant rantId={match.params.rantId}/>
           )} />
+          <Route path='/u/login' component={Login} />
+          <Route path='/u/signup' component={SignUp} />
         </Router>
       </div>
     )
