@@ -63,6 +63,32 @@ export default class UserPosts extends Component {
     })
   }
 
+  handleDelete(id) {
+    fetch(baseURL + '/rantz/' + id, {
+      method: "DELETE",
+      headers: {
+        'Content-Type': 'application/json',
+        'x-access-token': localStorage.getItem('token')
+      }
+    }).then(res => {
+      return res.json()
+    }).then(data => {
+      if (data.status.code === 401) {
+        //if the token in invalid remove it and redirect
+        localStorage.removeItem('token')
+        this.setState({redirect: true})
+      } else {
+        const fakeArray = [...this.state.userPosts]
+        const findIndex = fakeArray.findIndex(post => post.id === id)
+        fakeArray.splice(findIndex, 1)
+        this.setState({
+          redirect: false,
+          userPosts: fakeArray  
+        })
+      }
+    })
+  }
+
   render() {
     return (
       <div>
@@ -78,7 +104,9 @@ export default class UserPosts extends Component {
                 <p>By: {post.created_by.username} at {post.created_at}</p>
                 <p>{post.body}</p>
                 <button>Update</button>
-                <button>Delete</button>
+                <button onClick={() => {
+                  this.handleDelete(post.id)
+                  }}>Delete</button>
               </div>
               )
             })}
