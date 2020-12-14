@@ -61,7 +61,6 @@ export default class UpdateForm extends Component {
         this.setState({redirectLogin: true})
       }
     }
-
   }
 
   //Same method from the show route to grab the existing data
