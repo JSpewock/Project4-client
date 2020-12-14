@@ -63,9 +63,7 @@ export default class Rant extends Component {
   checkOwner() {
     //if you made this post the website recognizes that
     if (this.state.user.username) {
-      console.log(this.state.user)
       if (this.state.user.username === this.state.showOne.post.created_by.username) {
-         console.log(this.state.showOne)
         this.setState({owner: true})
       }
     }
