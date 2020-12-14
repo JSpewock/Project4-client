@@ -11,7 +11,9 @@ export default class UpdateForm extends Component {
       post: {},
       title: '',
       body: '',
-      done: false
+      done: false,
+      redirectLogin: false,
+      user: {}
     }
     this.showOneRant = this.showOneRant.bind(this)
     this.handleChange = this.handleChange.bind(this)
@@ -20,6 +22,46 @@ export default class UpdateForm extends Component {
 
   componentDidMount() {
     this.showOneRant(this.props.postId)
+    //login check
+    const token = localStorage.getItem('token')
+    if (token) {
+      fetch(baseURL + '/', {
+        method: "GET",
+        headers: {
+          'Content-Type': 'application/json',
+          'x-access-token': token
+        }
+      }).then(res => {
+        return res.json()
+      }).then(check => {
+        if (check.status.code === 401) {
+          //if the token in invalid remove it and redirect
+          localStorage.removeItem('token')
+          this.setState({redirectLogin: true})
+        } else {
+          this.setState({
+            redirectLogin: false,
+            user: check.data 
+          })
+        }
+        return check.data
+      }).then(res => {
+        if (!this.state.redirectLogin) {
+          this.setState({user: res})
+        }
+      })
+    } else {
+      //if there is no token, redirect
+      this.setState({redirectLogin: true})
+    }
+
+    if (this.state.user.id) {
+      //If you are not the one who created the post
+      if (this.state.user.username !== this.state.post.created_by.username) {
+        this.setState({redirectLogin: true})
+      }
+    }
+
   }
 
   //Same method from the show route to grab the existing data
@@ -72,6 +114,8 @@ export default class UpdateForm extends Component {
       <div>
         {this.state.done ? (
           <Redirect to='/u/myposts'/>
+        ) : this.state.redirectLogin ? (
+          <Redirect to='/u/login' />
         ) : (
           <form onSubmit={this.handleSubmit}>
             <label htmlFor='title'>Title:</label>

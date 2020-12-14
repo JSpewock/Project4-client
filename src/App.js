@@ -20,8 +20,8 @@ export default class App extends Component {
     }
     this.getAllRants = this.getAllRants.bind(this)
     this.killToken = this.killToken.bind(this)
-    // this.newVisit = this.newVisit.bind(this)
     this.logIn = this.logIn.bind(this)
+    this.handleNewRant = this.handleNewRant.bind(this)
   }
 
   componentDidMount() {
@@ -79,44 +79,20 @@ export default class App extends Component {
     this.setState({loggedIn: false})
   }
 
-  // newVisit() {
-  //   //login check
-  //   const token = localStorage.getItem('token')
-  //   if (token) {
-  //     fetch(baseURL + '/', {
-  //       method: "GET",
-  //       headers: {
-  //         'Content-Type': 'application/json',
-  //         'x-access-token': token
-  //       }
-  //     }).then(res => {
-  //       return res.json()
-  //     }).then(check => {
-  //       if (check.status.code === 401) {
-  //         //if the token in invalid remove it
-  //         localStorage.removeItem('token')
-  //         this.setState({loggedIn: false})
-  //       } else {
-  //         this.setState({loggedIn: true})
-  //       }
-  //     })
-  //   } else {
-  //     //if there is no token, redirect
-  //     this.setState({loggedIn: false})
-  //   }
-  // }
-
   logIn () {
     this.setState({loggedIn: true})
+  }
+
+  handleNewRant(newPost) {
+    const fakeArray = [...this.state.allRants]
+    fakeArray.push(newPost.data)
+    this.setState({allRants: fakeArray})
   }
 
   
   render() {
     return (
       <div>
-        {/* {this.state.newVisit && (
-          this.newVisit()
-        )} */}
         <Router>
           {this.state.loggedIn ? (
             <div>
@@ -157,7 +133,9 @@ export default class App extends Component {
             <SignUp logIn={this.logIn} />
           )} />
           {/* create new post route  */}
-          <Route path='/p/create' component={CreateForm} />
+          <Route path='/p/create' render={({match}) => (
+            <CreateForm handleNewRant={this.handleNewRant} />
+          )} />
           {/* show user posts route  */}
           <Route path='/u/myposts' component={UserPosts} />
           {/* update route  */}

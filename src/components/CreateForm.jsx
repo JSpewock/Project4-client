@@ -64,6 +64,7 @@ export default class CreateForm extends Component {
     }).then(res => {
       return res.json()
     }).then(response => {
+      this.props.handleNewRant(response)
       this.setState({done: true})
     })
   }
