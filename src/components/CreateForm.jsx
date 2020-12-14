@@ -11,7 +11,8 @@ export default class CreateForm extends Component {
     this.state = {
       title: '',
       body: '',
-      redirect: false  
+      redirect: false,
+      done: false
     }
     this.handleChange = this.handleChange.bind(this)
     this.handleSubmit = this.handleSubmit.bind(this)
@@ -63,7 +64,7 @@ export default class CreateForm extends Component {
     }).then(res => {
       return res.json()
     }).then(response => {
-      console.log(response)
+      this.setState({done: true})
     })
   }
 
@@ -72,6 +73,8 @@ export default class CreateForm extends Component {
       <div>
         {this.state.redirect ? (
           <Redirect to='/u/login' />
+        ) : this.state.done ? (
+          <Redirect to='/' />
         ) : (
           <form onSubmit={this.handleSubmit}>
             <label htmlFor='title'>Title:</label>

@@ -1,4 +1,5 @@
 import React, { Component } from 'react'
+import {Redirect} from 'react-router-dom'
 
 
 const baseURL = process.env.REACT_APP_BASE_URL || 'http://localhost:8000'
@@ -8,7 +9,8 @@ export default class Login extends Component {
     super(props)
     this.state = {
       username: '',
-      password: ''
+      password: '',
+      done: false
     }
     this.handleChange = this.handleChange.bind(this)
     this.handleSubmit = this.handleSubmit.bind(this)
@@ -32,11 +34,13 @@ export default class Login extends Component {
     }).then(res => {
       return res.json()
     }).then(data => {
-      // console.log(data.data.token)
       localStorage.setItem('token', data.data.token)
+      //updates state for index
+      this.props.logIn()
       this.setState({
         username: '',
-        password: ''
+        password: '',
+        done: true
       })
     })
   }
@@ -44,14 +48,21 @@ export default class Login extends Component {
   render() {
     return (
       <div>
-        <h1>Login</h1>
-        <form onSubmit={this.handleSubmit}>
-          <label htmlFor='username'>Username:</label>
-          <input type='text' name='username' id='username' value={this.state.username} onChange={this.handleChange} />
-          <label htmlFor='password'>Password:</label>
-          <input type='password' name='password' id='password' value={this.state.password} onChange={this.handleChange} />
-          <input type='submit' value='Log-in' />
-        </form>
+        {this.state.done? (
+          <Redirect to={'/'} />
+        ) : (
+          <div>
+            <h1>Login</h1>
+            <form onSubmit={this.handleSubmit}>
+              <label htmlFor='username'>Username:</label>
+              <input type='text' name='username' id='username' value={this.state.username} onChange={this.handleChange} />
+              <label htmlFor='password'>Password:</label>
+              <input type='password' name='password' id='password' value={this.state.password} onChange={this.handleChange} />
+              <input type='submit' value='Log-in' />
+            </form>
+          </div>
+        )}
+        
       </div>
     )
   }

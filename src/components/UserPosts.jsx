@@ -100,8 +100,6 @@ export default class UserPosts extends Component {
       <div>
         {this.state.redirectLogin ? (
           <Redirect to='/u/login' />
-        ) : this.state.redirectUpdate ? (
-          <Redirect to={`/p/update/${this.state.postToUpdate}`} />
         ) : (
           <div>
             {this.state.userPosts.map(post => {
