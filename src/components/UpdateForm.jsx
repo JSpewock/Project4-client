@@ -15,57 +15,20 @@ export default class UpdateForm extends Component {
       redirectLogin: false,
       user: {}
     }
-    this.showOneRant = this.showOneRant.bind(this)
     this.handleChange = this.handleChange.bind(this)
     this.handleSubmit = this.handleSubmit.bind(this)
   }
 
   componentDidMount() {
-    this.showOneRant(this.props.postId)
-    //login check
-    const token = localStorage.getItem('token')
-    if (token) {
-      fetch(baseURL + '/', {
-        method: "GET",
-        headers: {
-          'Content-Type': 'application/json',
-          'x-access-token': token
-        }
-      }).then(res => {
-        return res.json()
-      }).then(check => {
-        if (check.status.code === 401) {
-          //if the token in invalid remove it and redirect
-          localStorage.removeItem('token')
-          this.setState({redirectLogin: true})
-        } else {
-          this.setState({
-            redirectLogin: false,
-            user: check.data 
-          })
-        }
-        return check.data
-      }).then(res => {
-        if (!this.state.redirectLogin) {
-          this.setState({user: res})
-        }
-      })
-    } else {
-      //if there is no token, redirect
-      this.setState({redirectLogin: true})
-    }
+    // this.showOneRant(this.props.postId)
 
-    if (this.state.user.id) {
-      //If you are not the one who created the post
-      if (this.state.user.username !== this.state.post.created_by.username) {
-        this.setState({redirectLogin: true})
-      }
-    }
-  }
+    //There is a lot to this so I tried to break it into blocks. The first does a call that grabs the data for the post you want to update, 
+    //the next checks if you're logged in, and the last checks if you are the person who made this post
 
-  //Same method from the show route to grab the existing data
-  showOneRant(id) {
-    fetch(baseURL + '/rantz/' + id, {
+    // ------------------------------------------
+    //               Post to Update
+    // ------------------------------------------
+    fetch(baseURL + '/rantz/' + this.props.postId, {
       method: "GET",
       headers: {
         'Content-Type': 'application/json'
@@ -80,8 +43,56 @@ export default class UpdateForm extends Component {
         title: data.data.post.title,
         body: data.data.post.body  
       })
+    }).then(res => {
+      //-----------------------------
+      //         Login Check
+      // ----------------------------
+      const token = localStorage.getItem('token')
+      if (token) {
+        fetch(baseURL + '/', {
+          method: "GET",
+          headers: {
+            'Content-Type': 'application/json',
+            'x-access-token': token
+          }
+        }).then(res => {
+          return res.json()
+        }).then(check => {
+          if (check.status.code === 401) {
+            //if the token in invalid remove it and redirect
+            localStorage.removeItem('token')
+            this.setState({redirectLogin: true})
+          } else {
+            this.setState({
+              redirectLogin: false,
+              user: check.data 
+            })
+          }
+          return check.data
+        }).then(res => {
+          if (!this.state.redirectLogin) {
+            this.setState({user: res})
+          }
+        })
+      } else {
+        //if there is no token, redirect
+        this.setState({redirectLogin: true})
+      }
+    }).then(res => {
+      // ---------------------------------
+      //       Owner verification
+      // ---------------------------------
+      if (this.state.user.id) {
+        //If you are not the one who created the post
+        if (this.state.user.username !== this.state.post.created_by.username) {
+          this.setState({redirectLogin: true})
+        }
+      }
     })
+    
   }
+
+  
 
   handleChange(event) {
     this.setState({[event.target.name] : event.target.value})

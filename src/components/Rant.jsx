@@ -11,12 +11,16 @@ export default class Rant extends Component {
       user: {},
       owner: false
     }
-    this.showOneRant = this.showOneRant.bind(this)
     this.checkOwner = this.checkOwner.bind(this)
   }
 
   componentDidMount() {
     // this.showOneRant(this.props.rantId)
+
+    //I tried to break this one up a little more. This is just two api calls, the first to get the data for the post, and the next to verify the user
+    // ----------------------------------
+    //             Post data
+    // ----------------------------------
     fetch(baseURL + '/rantz/' + this.props.rantId, {
       method: "GET",
       headers: {
@@ -29,6 +33,9 @@ export default class Rant extends Component {
       data.data.post.created_by.id = '?'
       this.setState({showOne: data.data})
     }).then(res => {
+      // ----------------------------
+      //         Verify User
+      // ----------------------------
       const token = localStorage.getItem('token')
       if (token) {
         fetch(baseURL + '/', {
@@ -46,6 +53,7 @@ export default class Rant extends Component {
             })
           }
         }).then(res => {
+          //check to see if the user made this post
           this.checkOwner()
         })
       }
@@ -63,21 +71,6 @@ export default class Rant extends Component {
     }
   }
 
-  showOneRant(id) {
-    fetch(baseURL + '/rantz/' + id, {
-      method: "GET",
-      headers: {
-        'Content-Type': 'application/json'
-      }
-    }).then(res => {
-      return res.json()
-    }).then(data => {
-      data.data.post.created_by.password = ''
-      data.data.post.created_by.id = '?'
-      this.setState({showOne: data.data})
-    })
-  }
-
   render() {
     return (
       <div>
@@ -87,7 +80,7 @@ export default class Rant extends Component {
             <p>By: {this.state.showOne.post.created_by.username} at {this.state.showOne.post.created_at}</p>
             <p>{this.state.showOne.post.body}</p>
             {this.state.owner && (
-              <Link to={`/p/update/${this.state.showOne.id}`}>
+              <Link to={`/p/update/${this.state.showOne.post.id}`}>
                 <button>Update</button>
               </Link>
             )}
