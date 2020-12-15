@@ -11,7 +11,7 @@ export default class Rant extends Component {
       user: {},
       owner: false,
       deleted: false,
-      commentBody: '',
+      commentBody: null,
       showInput: false
     }
     this.checkOwner = this.checkOwner.bind(this)
@@ -102,9 +102,13 @@ export default class Rant extends Component {
     }
   }
 
-  handleAddComment(event, id) {
+  handleAddComment(event) {
     event.preventDefault()
-    fetch(baseURL + '/comments/' + id, {
+    //if you don't include anything in your comment, it purposefully errors to avoid empty comments in the DB
+    if (this.state.commentBody === '') {
+      this.setState({commentBody: null})
+    }
+    fetch(baseURL + '/comments/' + this.state.showOne.post.id, {
       method: "POST",
       body: JSON.stringify({
         body: this.state.commentBody
@@ -117,14 +121,34 @@ export default class Rant extends Component {
       return res.json()
     }).then(data => {
       const fakeObject = this.state.showOne
-      fakeObject.comments.unshift(data)
+      fakeObject.comments.push(data.data)
       console.log(fakeObject)
-      this.setState({showOne: fakeObject})
+      this.setState({
+        showOne: fakeObject,
+        commentBody: '',
+        showInput: false
+      })
     })
   }
 
   handleChange(event) {
     this.setState({[event.target.name]: event.target.value})
+  }
+
+  deleteComment(id) {
+    fetch(baseURL + '/comments/' + id, {
+      method: "DELETE",
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    }).then(res => {
+      return res.json()
+    }).then(data => {
+      const fakeObject = this.state.showOne
+      const findIndex = this.state.showOne.comments.findIndex(comment => comment.id === id)
+      fakeObject.comments.splice(findIndex, 1)
+      this.setState({showOne: fakeObject})
+    }) 
   }
 
   render() {
@@ -154,13 +178,25 @@ export default class Rant extends Component {
                 }}>Add Comment</button>
               )}
               {this.state.showInput && (
-                <form onSubmit={() => {
-                  this.handleAddComment(this.state.showOne.post.id)
-                }}>
-                  <input type='text' name='commentBody' value={this.state.commentBody} onChange={this.handleChange} />
+                <form onSubmit={this.handleAddComment}>
+                  <input type='text' name='commentBody' onChange={this.handleChange} />
                   <input type='submit' value='Add comment'/>
                 </form>
               )}
+              <h2>Comments ({this.state.showOne.comments.length}):</h2>
+              {this.state.showOne.comments.map(comment => {
+                return(
+                  <div>
+                    <h4>{comment.created_by.username}</h4>
+                    <p>{comment.body}</p>
+                    {this.state.user.username && (
+                      comment.created_by.username === this.state.user.username && (
+                        <button>Delete</button>
+                      )
+                    )}
+                  </div>
+                )
+              })}
             </div>
           )
         )}
