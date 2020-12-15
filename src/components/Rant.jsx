@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import {Link} from 'react-router-dom'
+import {Link, Redirect} from 'react-router-dom'
 
 const baseURL = process.env.REACT_APP_BASE_URL || 'http://localhost:8000'
 
@@ -9,9 +9,11 @@ export default class Rant extends Component {
     this.state = {
       showOne: {},
       user: {},
-      owner: false
+      owner: false,
+      deleted: false
     }
     this.checkOwner = this.checkOwner.bind(this)
+    this.handleDelete = this.handleDelete.bind(this)
   }
 
   componentDidMount() {
@@ -69,21 +71,58 @@ export default class Rant extends Component {
     }
   }
 
+  handleDelete(id) {
+    const areYouSure = prompt('Are you sure you want to delete this?', 'Y/N')
+    //This is pretty much a bunch of if/else statements that say if you say anything other than 'y' in the prompt it wont delete
+    if (areYouSure == null) {
+      return ''
+    } else if (areYouSure.toLowerCase() === 'y') {
+      fetch(baseURL + '/rantz/' + id, {
+        method: "DELETE",
+        headers: {
+          'Content-Type': 'application/json',
+          'x-access-token': localStorage.getItem('token')
+         }
+      }).then(res => {
+        return res.json()
+      }).then(data => {
+        if (data.status.code === 401) {
+          this.setState({error: data.status.message})
+        } else {
+          this.setState({deleted: true})
+          this.props.handleDelete(id)
+        }
+      })
+    } else {
+      return ''
+    }
+  }
+
   render() {
     return (
       <div>
-        {this.state.showOne.post && (
-          <div>
-            <h1>{this.state.showOne.post.title}</h1>
-            <p>By: {this.state.showOne.post.created_by.username} at {this.state.showOne.post.created_at}</p>
-            <p>{this.state.showOne.post.body}</p>
-            {this.state.owner && (
-              <Link to={`/p/update/${this.state.showOne.post.id}`}>
-                <button>Update</button>
-              </Link>
-            )}
-          </div>
+        {this.state.deleted ? (
+          <Redirect to='/' />
+        ) : (
+          this.state.showOne.post && (
+            <div>
+              <h1>{this.state.showOne.post.title}</h1>
+              <p>By: {this.state.showOne.post.created_by.username} at {this.state.showOne.post.created_at}</p>
+              <p>{this.state.showOne.post.body}</p>
+              {this.state.owner && (
+                <div>
+                  <Link to={`/p/update/${this.state.showOne.post.id}`}>
+                    <button>Update</button>
+                  </Link>
+                  <button onClick={() => {
+                    this.handleDelete(this.state.showOne.post.id)}
+                    } >Delete</button>
+                </div>
+              )}
+            </div>
+          )
         )}
+        
       </div>
     )
   }

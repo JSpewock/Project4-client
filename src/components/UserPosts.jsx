@@ -13,6 +13,7 @@ export default class UserPosts extends Component {
       userPosts: [],
       postToUpdate: {}
     }
+    this.handleDelete = this.handleDelete.bind(this)
   }
 
   componentDidMount() {
@@ -79,7 +80,7 @@ export default class UserPosts extends Component {
       return res.json()
     }).then(data => {
       if (data.status.code === 401) {
-        //if the token in invalid remove it and redirect
+        //if the token is invalid remove it and redirect
         localStorage.removeItem('token')
         this.setState({redirectLogin: true})
       } else {

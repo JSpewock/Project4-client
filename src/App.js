@@ -22,6 +22,7 @@ export default class App extends Component {
     this.killToken = this.killToken.bind(this)
     this.logIn = this.logIn.bind(this)
     this.handleNewRant = this.handleNewRant.bind(this)
+    this.handleDelete = this.handleDelete.bind(this)
   }
 
   componentDidMount() {
@@ -89,6 +90,13 @@ export default class App extends Component {
     this.setState({allRants: fakeArray})
   }
 
+  handleDelete(id) {
+    const fakeArray = [...this.state.allRants]
+    const findIndex = fakeArray.findIndex(post => post.id == id)
+    fakeArray.splice(findIndex, 1)
+    this.setState({allRants: fakeArray})
+  }
+
   
   render() {
     return (
@@ -122,7 +130,7 @@ export default class App extends Component {
           )} />
           {/* show route */}
           <Route path='/s/:rantId' render={({match}) => (
-            <Rant rantId={match.params.rantId}/>
+            <Rant rantId={match.params.rantId} handleDelete={this.handleDelete}/>
           )} />
           {/* login route */}
           <Route path='/u/login' render={({match}) => (
