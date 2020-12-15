@@ -22,6 +22,7 @@ export default class Rant extends Component {
     this.handleAddComment = this.handleAddComment.bind(this)
     this.handleChange = this.handleChange.bind(this)
     this.deleteComment = this.deleteComment.bind(this)
+    this.handleUpdateComment = this.handleUpdateComment.bind(this)
   }
 
   componentDidMount() {
@@ -164,6 +165,13 @@ export default class Rant extends Component {
     this.setState({commentToUpdate: commentToUpdate.body})
   }
 
+  handleUpdateComment(comment) {
+    const fakeObject = this.state.showOne
+    const findIndex = fakeObject.comments.findIndex(fakeComment => fakeComment.id === comment.id)
+    fakeObject.comments[findIndex] = comment
+    this.setState({showOne: fakeObject})
+  }
+
   render() {
     return (
       <div>
@@ -199,30 +207,7 @@ export default class Rant extends Component {
               <h2>Comments ({this.state.showOne.comments.length}):</h2>
               {this.state.showOne.comments.map(comment => {
                 return(
-                  <Comment comment={comment} user={this.state.user} deleteComment={this.deleteComment} />
-                  // <div key={comment.id}>
-                  //   <h4>{comment.created_by.username}</h4>
-                  //   {this.state.editComment ? (
-                  //     <form>
-                  //       <input type='text' name='editCommentBody' onChange={this.handleChange} />
-                  //       <input type='submit' value='Edit comment' />
-                  //     </form>
-                  //   ) : (
-                  //     <p>{comment.body}</p>
-                  //   )}
-                  //   {this.state.user.username && (
-                  //     comment.created_by.username === this.state.user.username && (
-                  //       <div>
-                  //         <button onClick={() => {
-                  //           this.deleteComment(comment.id)
-                  //         }}>Delete</button>
-                  //         <button onClick={() => {
-                  //           this.toggleEditComment(comment.id)
-                  //         }}>Update</button>
-                  //       </div>
-                  //     )
-                  //   )}
-                  // </div>
+                  <Comment comment={comment} user={this.state.user} deleteComment={this.deleteComment} handleUpdateComment={this.handleUpdateComment}/>
                 )
               })}
             </div>

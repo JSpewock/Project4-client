@@ -1,22 +1,46 @@
 import React, { Component } from 'react'
 
+const baseURL = process.env.REACT_APP_BASE_URL || 'http://localhost:8000'
+
 export default class Comment extends Component {
   constructor(props) {
     super(props)
     this.state = {
-      commentToUpdate: ''
+      editCommentBody: '',
+      editComment: false
     }
     this.toggleEditComment = this.toggleEditComment.bind(this)
     this.handleChange = this.handleChange.bind(this)
+    this. handleUpdateComment = this.handleUpdateComment.bind(this)
   }
 
-  toggleEditComment(id) {
-    const commentToUpdate = this.state.showOne.comments.find(comment => comment.id === id)
-    this.setState({commentToUpdate: commentToUpdate.body})
+  toggleEditComment() {
+    this.setState({
+      editCommentBody: this.props.comment.body,
+      editComment: true
+    })
   }
 
   handleChange(event) {
     this.setState({[event.target.name]: event.target.value})
+  }
+
+  handleUpdateComment(event) {
+    event.preventDefault()
+    fetch(baseURL + '/comments/' + this.props.comment.id, {
+      method: "PUT",
+      body: JSON.stringify({
+        body: this.state.editCommentBody
+      }),
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    }).then(res => {
+      return res.json()
+    }).then(data => {
+      this.props.handleUpdateComment(data.data)
+      this.setState({editComment: false})
+    })
   }
 
   render() {
@@ -24,8 +48,8 @@ export default class Comment extends Component {
       <div key={this.props.comment.id}>
         <h4>{this.props.comment.created_by.username}</h4>
         {this.state.editComment ? (
-          <form>
-            <input type='text' name='editCommentBody' onChange={this.handleChange} />
+          <form onSubmit={this.handleUpdateComment}>
+            <input type='text' name='editCommentBody' value={this.state.editCommentBody} onChange={this.handleChange} />
             <input type='submit' value='Edit comment' />
           </form>
         ) : (
@@ -38,7 +62,7 @@ export default class Comment extends Component {
                 this.props.deleteComment(this.props.comment.id)
                 }}>Delete</button>
                 <button onClick={() => {
-                  this.toggleEditComment(this.props.comment.id)
+                  this.toggleEditComment()
                 }}>Update</button>
             </div>
           )
