@@ -18,6 +18,7 @@ export default class Rant extends Component {
     this.handleDelete = this.handleDelete.bind(this)
     this.handleAddComment = this.handleAddComment.bind(this)
     this.handleChange = this.handleChange.bind(this)
+    this.deleteComment = this.deleteComment.bind(this)
   }
 
   componentDidMount() {
@@ -37,6 +38,10 @@ export default class Rant extends Component {
     }).then(data => {
       data.data.post.created_by.password = ''
       data.data.post.created_by.id = '?'
+      data.data.comments.map(comment => {
+        comment.created_by.id = '?'
+        comment.created_by.password = ''
+      })
       this.setState({showOne: data.data})
     }).then(res => {
       // ----------------------------
@@ -186,12 +191,14 @@ export default class Rant extends Component {
               <h2>Comments ({this.state.showOne.comments.length}):</h2>
               {this.state.showOne.comments.map(comment => {
                 return(
-                  <div>
+                  <div key={comment.id}>
                     <h4>{comment.created_by.username}</h4>
                     <p>{comment.body}</p>
                     {this.state.user.username && (
                       comment.created_by.username === this.state.user.username && (
-                        <button>Delete</button>
+                        <button onClick={() => {
+                          this.deleteComment(comment.id)
+                        }}>Delete</button>
                       )
                     )}
                   </div>
