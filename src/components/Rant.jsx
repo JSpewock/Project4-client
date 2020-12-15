@@ -10,10 +10,14 @@ export default class Rant extends Component {
       showOne: {},
       user: {},
       owner: false,
-      deleted: false
+      deleted: false,
+      commentBody: '',
+      showInput: false
     }
     this.checkOwner = this.checkOwner.bind(this)
     this.handleDelete = this.handleDelete.bind(this)
+    this.handleAddComment = this.handleAddComment.bind(this)
+    this.handleChange = this.handleChange.bind(this)
   }
 
   componentDidMount() {
@@ -98,6 +102,31 @@ export default class Rant extends Component {
     }
   }
 
+  handleAddComment(event, id) {
+    event.preventDefault()
+    fetch(baseURL + '/comments/' + id, {
+      method: "POST",
+      body: JSON.stringify({
+        body: this.state.commentBody
+      }),
+      headers: {
+        'Content-Type': 'application/json',
+        'x-access-token': localStorage.getItem('token')
+      }
+    }).then(res => {
+      return res.json()
+    }).then(data => {
+      const fakeObject = this.state.showOne
+      fakeObject.comments.unshift(data)
+      console.log(fakeObject)
+      this.setState({showOne: fakeObject})
+    })
+  }
+
+  handleChange(event) {
+    this.setState({[event.target.name]: event.target.value})
+  }
+
   render() {
     return (
       <div>
@@ -118,6 +147,19 @@ export default class Rant extends Component {
                     this.handleDelete(this.state.showOne.post.id)}
                     } >Delete</button>
                 </div>
+              )}
+              {this.state.user.username && (
+                <button onClick={() => {
+                  this.setState({showInput: true})
+                }}>Add Comment</button>
+              )}
+              {this.state.showInput && (
+                <form onSubmit={() => {
+                  this.handleAddComment(this.state.showOne.post.id)
+                }}>
+                  <input type='text' name='commentBody' value={this.state.commentBody} onChange={this.handleChange} />
+                  <input type='submit' value='Add comment'/>
+                </form>
               )}
             </div>
           )

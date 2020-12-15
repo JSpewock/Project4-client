@@ -84,6 +84,7 @@ export default class UserPosts extends Component {
         localStorage.removeItem('token')
         this.setState({redirectLogin: true})
       } else {
+        this.props.handleDelete(id)
         const fakeArray = [...this.state.userPosts]
         const findIndex = fakeArray.findIndex(post => post.id === id)
         fakeArray.splice(findIndex, 1)

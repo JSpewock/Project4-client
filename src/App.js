@@ -145,7 +145,9 @@ export default class App extends Component {
             <CreateForm handleNewRant={this.handleNewRant} />
           )} />
           {/* show user posts route  */}
-          <Route path='/u/myposts' component={UserPosts} />
+          <Route path='/u/myposts' render={({match}) => (
+            <UserPosts handleDelete={this.handleDelete} />
+          )} />
           {/* update route  */}
           <Route path='/p/update/:postId' render={({match}) => (
               <UpdateForm postId={match.params.postId}/>
