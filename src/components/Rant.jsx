@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 import {Link, Redirect} from 'react-router-dom'
+import Comment from './Comment'
 
 const baseURL = process.env.REACT_APP_BASE_URL || 'http://localhost:8000'
 
@@ -12,7 +13,9 @@ export default class Rant extends Component {
       owner: false,
       deleted: false,
       commentBody: null,
-      showInput: false
+      showInput: false,
+      editComment: false,
+      commentToUpdate: ''
     }
     this.checkOwner = this.checkOwner.bind(this)
     this.handleDelete = this.handleDelete.bind(this)
@@ -156,6 +159,11 @@ export default class Rant extends Component {
     }) 
   }
 
+  toggleEditComment(id) {
+    const commentToUpdate = this.state.showOne.comments.find(comment => comment.id === id)
+    this.setState({commentToUpdate: commentToUpdate.body})
+  }
+
   render() {
     return (
       <div>
@@ -191,17 +199,30 @@ export default class Rant extends Component {
               <h2>Comments ({this.state.showOne.comments.length}):</h2>
               {this.state.showOne.comments.map(comment => {
                 return(
-                  <div key={comment.id}>
-                    <h4>{comment.created_by.username}</h4>
-                    <p>{comment.body}</p>
-                    {this.state.user.username && (
-                      comment.created_by.username === this.state.user.username && (
-                        <button onClick={() => {
-                          this.deleteComment(comment.id)
-                        }}>Delete</button>
-                      )
-                    )}
-                  </div>
+                  <Comment comment={comment} user={this.state.user} deleteComment={this.deleteComment} />
+                  // <div key={comment.id}>
+                  //   <h4>{comment.created_by.username}</h4>
+                  //   {this.state.editComment ? (
+                  //     <form>
+                  //       <input type='text' name='editCommentBody' onChange={this.handleChange} />
+                  //       <input type='submit' value='Edit comment' />
+                  //     </form>
+                  //   ) : (
+                  //     <p>{comment.body}</p>
+                  //   )}
+                  //   {this.state.user.username && (
+                  //     comment.created_by.username === this.state.user.username && (
+                  //       <div>
+                  //         <button onClick={() => {
+                  //           this.deleteComment(comment.id)
+                  //         }}>Delete</button>
+                  //         <button onClick={() => {
+                  //           this.toggleEditComment(comment.id)
+                  //         }}>Update</button>
+                  //       </div>
+                  //     )
+                  //   )}
+                  // </div>
                 )
               })}
             </div>
