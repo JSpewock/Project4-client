@@ -20,8 +20,9 @@ export default class App extends Component {
     }
     this.getAllRants = this.getAllRants.bind(this)
     this.killToken = this.killToken.bind(this)
-    // this.newVisit = this.newVisit.bind(this)
     this.logIn = this.logIn.bind(this)
+    this.handleNewRant = this.handleNewRant.bind(this)
+    this.handleDelete = this.handleDelete.bind(this)
   }
 
   componentDidMount() {
@@ -79,44 +80,27 @@ export default class App extends Component {
     this.setState({loggedIn: false})
   }
 
-  // newVisit() {
-  //   //login check
-  //   const token = localStorage.getItem('token')
-  //   if (token) {
-  //     fetch(baseURL + '/', {
-  //       method: "GET",
-  //       headers: {
-  //         'Content-Type': 'application/json',
-  //         'x-access-token': token
-  //       }
-  //     }).then(res => {
-  //       return res.json()
-  //     }).then(check => {
-  //       if (check.status.code === 401) {
-  //         //if the token in invalid remove it
-  //         localStorage.removeItem('token')
-  //         this.setState({loggedIn: false})
-  //       } else {
-  //         this.setState({loggedIn: true})
-  //       }
-  //     })
-  //   } else {
-  //     //if there is no token, redirect
-  //     this.setState({loggedIn: false})
-  //   }
-  // }
-
   logIn () {
     this.setState({loggedIn: true})
+  }
+
+  handleNewRant(newPost) {
+    const fakeArray = [...this.state.allRants]
+    fakeArray.push(newPost.data)
+    this.setState({allRants: fakeArray})
+  }
+
+  handleDelete(id) {
+    const fakeArray = [...this.state.allRants]
+    const findIndex = fakeArray.findIndex(post => post.id == id)
+    fakeArray.splice(findIndex, 1)
+    this.setState({allRants: fakeArray})
   }
 
   
   render() {
     return (
       <div>
-        {/* {this.state.newVisit && (
-          this.newVisit()
-        )} */}
         <Router>
           {this.state.loggedIn ? (
             <div>
@@ -146,7 +130,7 @@ export default class App extends Component {
           )} />
           {/* show route */}
           <Route path='/s/:rantId' render={({match}) => (
-            <Rant rantId={match.params.rantId}/>
+            <Rant rantId={match.params.rantId} handleDelete={this.handleDelete}/>
           )} />
           {/* login route */}
           <Route path='/u/login' render={({match}) => (
@@ -157,9 +141,13 @@ export default class App extends Component {
             <SignUp logIn={this.logIn} />
           )} />
           {/* create new post route  */}
-          <Route path='/p/create' component={CreateForm} />
+          <Route path='/p/create' render={({match}) => (
+            <CreateForm handleNewRant={this.handleNewRant} />
+          )} />
           {/* show user posts route  */}
-          <Route path='/u/myposts' component={UserPosts} />
+          <Route path='/u/myposts' render={({match}) => (
+            <UserPosts handleDelete={this.handleDelete} />
+          )} />
           {/* update route  */}
           <Route path='/p/update/:postId' render={({match}) => (
               <UpdateForm postId={match.params.postId}/>
