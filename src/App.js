@@ -23,6 +23,7 @@ export default class App extends Component {
     this.logIn = this.logIn.bind(this)
     this.handleNewRant = this.handleNewRant.bind(this)
     this.handleDelete = this.handleDelete.bind(this)
+    this.handleSort = this.handleSort.bind(this)
   }
 
   componentDidMount() {
@@ -92,11 +93,30 @@ export default class App extends Component {
 
   handleDelete(id) {
     const fakeArray = [...this.state.allRants]
-    const findIndex = fakeArray.findIndex(post => post.id == id)
+    const findIndex = fakeArray.findIndex(post => post.id === id)
     fakeArray.splice(findIndex, 1)
     this.setState({allRants: fakeArray})
   }
 
+  handleSort(topic) {
+    fetch(baseURL + '/rantz/sort/' + topic, {
+      method: "GET",
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    }).then(res => {
+      return res.json()
+    }).then(data => {
+      const sortedRants = []
+      data.data.map(rant => {
+        rant.created_by.id = '?'
+        rant.created_by.password = ''
+        sortedRants.push(rant)
+        return ''
+      })
+      this.setState({allRants: sortedRants})
+    })
+  }
   
   render() {
     return (
@@ -126,7 +146,7 @@ export default class App extends Component {
           )}
           {/* index route */}
           <Route path='/' exact render={({match}) => (
-            <Index allRants={this.state.allRants}/>
+            <Index allRants={this.state.allRants} handleSort={this.handleSort}/>
           )} />
           {/* show route */}
           <Route path='/s/:rantId' render={({match}) => (

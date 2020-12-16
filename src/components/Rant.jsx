@@ -45,6 +45,7 @@ export default class Rant extends Component {
       data.data.comments.map(comment => {
         comment.created_by.id = '?'
         comment.created_by.password = ''
+        return ''
       })
       this.setState({showOne: data.data})
     }).then(res => {
