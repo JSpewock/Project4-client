@@ -50,14 +50,14 @@ export default class Signup extends Component {
         {this.state.done ? (
           <Redirect to={'/'} />
         ) : (
-          <div>
+          <div className="form-div">
           <h1>Sign-up</h1>
-          <form onSubmit={this.handleSubmit}>
+          <form onSubmit={this.handleSubmit} className="form">
             <label htmlFor='username'>Username:</label>
             <input type='text' name='username' value={this.state.username} onChange={this.handleChange} />
             <label htmlFor='password'>Password:</label>
             <input type='password' name='password' value={this.state.password} onChange={this.handleChange} />
-            <input type='submit' value='Sign-up' />
+            <input type='submit' value='Sign-up' className="submit-button" />
           </form>
           </div>
         )}

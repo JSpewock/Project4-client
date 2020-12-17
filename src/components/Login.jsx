@@ -51,14 +51,14 @@ export default class Login extends Component {
         {this.state.done? (
           <Redirect to={'/'} />
         ) : (
-          <div>
+          <div className="form-div">
             <h1>Login</h1>
-            <form onSubmit={this.handleSubmit}>
+            <form onSubmit={this.handleSubmit} className="form">
               <label htmlFor='username'>Username:</label>
               <input type='text' name='username' id='username' value={this.state.username} onChange={this.handleChange} />
               <label htmlFor='password'>Password:</label>
               <input type='password' name='password' id='password' value={this.state.password} onChange={this.handleChange} />
-              <input type='submit' value='Log-in' />
+              <input type='submit' value='Log-in' className="submit-button" />
             </form>
           </div>
         )}
