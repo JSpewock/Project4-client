@@ -13,7 +13,8 @@ export default class UpdateForm extends Component {
       body: '',
       done: false,
       redirectLogin: false,
-      user: {}
+      user: {},
+      topic: ''
     }
     this.handleChange = this.handleChange.bind(this)
     this.handleSubmit = this.handleSubmit.bind(this)
@@ -41,7 +42,8 @@ export default class UpdateForm extends Component {
       this.setState({
         post: data.data,
         title: data.data.post.title,
-        body: data.data.post.body  
+        body: data.data.post.body,
+        topic: data.data.post.topic  
       })
     }).then(res => {
       //-----------------------------
@@ -104,7 +106,8 @@ export default class UpdateForm extends Component {
       method: "PUT",
       body: JSON.stringify({
         title: this.state.title,
-        body: this.state.body
+        body: this.state.body,
+        topic: this.state.topic
       }),
       headers: {
         'Content-Type': 'application/json',
@@ -123,17 +126,33 @@ export default class UpdateForm extends Component {
     return (
       <div>
         {this.state.done ? (
-          <Redirect to='/u/myposts'/>
+          <Redirect to='/'/>
         ) : this.state.redirectLogin ? (
           <Redirect to='/u/login' />
         ) : (
-          <form onSubmit={this.handleSubmit}>
+          <div className="form-div">
+            <h1>Not too happy with what you said? That's alright, you can change it at any time.</h1>
+          <form onSubmit={this.handleSubmit} className="form" id="update-form">
             <label htmlFor='title'>Title:</label>
             <input name='title' type='text' onChange={this.handleChange} value={this.state.title} />
             <label htmlFor='body'>Body:</label>
-            <input name='body' type='text' onChange={this.handleChange} value={this.state.body} />
-            <input type='submit' value='Edit' />
+            <textarea name='body' type='text' onChange={this.handleChange} value={this.state.body}></textarea>
+            <label>Who/What is your rant targetted toward?</label>
+              <label htmlFor="games" className="radio-button">Games</label>
+              <input type="radio" name="topic" value="games" onChange={this.handleChange} checked={this.state.topic === 'games' ? true : false}/><br></br>
+              <label htmlFor="food" className="radio-button">Food</label>
+              <input type="radio" name="topic" value="food" onChange={this.handleChange} checked={this.state.topic === 'food' ? true : false}/><br></br>
+              <label htmlFor="people" className="radio-button">People</label>
+              <input type="radio" name="topic" value="people" onChange={this.handleChange} checked={this.state.topic === 'people' ? true : false}/><br></br>
+              <label htmlFor="company" className="radio-button">Company</label>
+              <input type="radio" name="topic" value="company" onChange={this.handleChange} checked={this.state.topic === 'company' ? true : false}/><br></br>
+              <label htmlFor="place" className="radio-button">Place</label>
+              <input type="radio" name="topic" value="place" onChange={this.handleChange} checked={this.state.topic === 'place' ? true : false}/><br></br>
+              <label htmlFor="other" className="radio-button">Other</label>
+              <input type="radio" name="topic" value="other" onChange={this.handleChange} checked={this.state.topic === 'other' ? true : false}/><br></br>
+            <input type='submit' value='Edit' className="submit-button" />
           </form>
+          </div>
         )}
       </div>
     )
