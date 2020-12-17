@@ -27,7 +27,7 @@ export default class App extends Component {
   }
 
   componentDidMount() {
-    this.getAllRants()
+    this.handleSort('recent')
     //login check
     const token = localStorage.getItem('token')
     if (token) {
