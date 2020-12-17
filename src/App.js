@@ -87,7 +87,7 @@ export default class App extends Component {
 
   handleNewRant(newPost) {
     const fakeArray = [...this.state.allRants]
-    fakeArray.push(newPost.data)
+    fakeArray.unshift(newPost.data)
     this.setState({allRants: fakeArray})
   }
 

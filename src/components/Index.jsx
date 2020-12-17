@@ -43,8 +43,8 @@ export default class Index extends Component {
                 this.handleSort('other')}
                 }>Other</a>
               <a href='#' onClick={() => {
-                this.handleSort('game')
-              }}>Game</a>
+                this.handleSort('games')
+              }}>Games</a>
               <a href='#' onClick={() => {
                 this.handleSort('food')
               }}>Food</a>

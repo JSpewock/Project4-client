@@ -12,7 +12,8 @@ export default class CreateForm extends Component {
       title: '',
       body: '',
       redirect: false,
-      done: false
+      done: false,
+      topic: ''
     }
     this.handleChange = this.handleChange.bind(this)
     this.handleSubmit = this.handleSubmit.bind(this)
@@ -55,7 +56,8 @@ export default class CreateForm extends Component {
       method: "POST",
       body: JSON.stringify({
         title: this.state.title,
-        body: this.state.body
+        body: this.state.body,
+        topic: this.state.topic
       }),
       headers: {
         'Content-Type': 'application/json',
@@ -84,6 +86,19 @@ export default class CreateForm extends Component {
               <input name='title' type='text' onChange={this.handleChange} value={this.state.title} className="title-input" />
               <label htmlFor='body'>Body:</label>
               <textarea name='body' onChange={this.handleChange} placeholder="You don't have to be too nice but try not to get unethical either..." >{this.state.body}</textarea>
+              <label>Who/What is your rant targetted toward?</label>
+              <label htmlFor="games" className="radio-button">Games</label>
+              <input type="radio" name="topic" value="games" onChange={this.handleChange}/><br></br>
+              <label htmlFor="food" className="radio-button">Food</label>
+              <input type="radio" name="topic" value="food" onChange={this.handleChange}/><br></br>
+              <label htmlFor="people" className="radio-button">People</label>
+              <input type="radio" name="topic" value="people" onChange={this.handleChange}/><br></br>
+              <label htmlFor="company" className="radio-button">Company</label>
+              <input type="radio" name="topic" value="company" onChange={this.handleChange}/><br></br>
+              <label htmlFor="place" className="radio-button">Place</label>
+              <input type="radio" name="topic" value="place" onChange={this.handleChange}/><br></br>
+              <label htmlFor="other" className="radio-button">Other</label>
+              <input type="radio" name="topic" value="other" onChange={this.handleChange}/><br></br>
               <input type='submit' value='Add Post' className="submit-button"/>
             </form>
           </div>

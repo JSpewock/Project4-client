@@ -205,3 +205,6 @@ body {
 .title-input {
   width: 600px;
 }
+.form > .radio-button {
+  display: inline-block;
+}
