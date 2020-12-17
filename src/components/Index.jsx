@@ -72,10 +72,8 @@ export default class Index extends Component {
               <Link to={`/s/${rant.id}`}>
               <div key={rant.id} id={rant.id} className="rant" >
                 <p className="posted-by">Posted by <span className="user">/ {rant.created_by.username} /</span> on {rant.created_at}</p>
-                {/* <Link to={`/s/${rant.id}`}> */}
-                  <h1>{rant.title}</h1>
-                {/* </Link> */}
-                <p>{rant.body}</p>  
+                <h1>{rant.title}</h1>
+                <p className="short-body">{rant.shortBody} ...</p>  
               </div>
               </Link>
             )

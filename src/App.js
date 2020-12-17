@@ -41,7 +41,8 @@ export default class App extends Component {
         return res.json()
       }).then(check => {
         if (check.status.code === 401) {
-          //if the token in invalid remove it
+          //if the token is invalid remove it
+          //Michael told me how to do this
           localStorage.removeItem('token')
           this.setState({loggedIn: false})
         } else {
@@ -111,6 +112,22 @@ export default class App extends Component {
       data.data.map(rant => {
         rant.created_by.id = '?'
         rant.created_by.password = ''
+
+        //This is a method I made myself that essentially take a sentence and takes only the first 50 characters
+        //Most of the methods used I already knew, but if I didn't, I looked at w3schools.com
+        let shorterBody = ''
+        const splitWord = rant.body.split('')
+        const shorterBodyArr = []
+        for(let i = 0; i < 50; i++) {
+          if (splitWord[i]) {
+            shorterBodyArr.push(splitWord[i])
+          }
+          if (i === 49) {
+            shorterBody = shorterBodyArr.join('')
+          }
+        }
+        rant.shortBody = shorterBody
+
         sortedRants.push(rant)
         return ''
       })

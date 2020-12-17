@@ -136,6 +136,10 @@ body {
   border: 3px solid black;
 }
 
+.rant > .short-body {
+  color: rgba(0,0,0,0.8);
+}
+
 /* show page */
 .show-main {
   max-width: 700px;
@@ -143,10 +147,6 @@ body {
   background-color: white;
   padding: 20px;
 }
-
-/* .show-buttons {
-  display: inline;
-} */
 
 #comment-button {
   margin-top: 10px;
