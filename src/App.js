@@ -122,7 +122,36 @@ export default class App extends Component {
     return (
       <div>
         <Router>
-          {this.state.loggedIn ? (
+          <div className="header">
+            <div className="header-title">
+              <h1>RANTZ</h1>
+            </div>
+            <div className="header-nav">
+              {this.state.loggedIn ? (
+                <div className="nav-links">
+                  <Link to={'/p/create'}>
+                    <p>Make a New Post</p>
+                  </Link>
+                  <Link to={'/u/myposts'}>
+                    <p>My Posts</p>
+                  </Link>
+                  <Link to={'/redirect'}>
+                    <p onClick={this.killToken}>Log Out</p>
+                  </Link>
+                </div>
+              ) : (
+                <div className="nav-links">
+                  <Link to={'/u/login'}>
+                    <p>Log In</p>
+                  </Link>
+                  <Link to={'/u/signup'}>
+                    <p>Sign Up</p>
+                  </Link>
+                </div>
+              )}
+            </div>
+          </div>
+          {/* {this.state.loggedIn ? (
             <div>
               <Link to={'/p/create'}>
                 <button>Make a New Post</button>
@@ -143,7 +172,7 @@ export default class App extends Component {
                 <button>Sign Up</button>
               </Link>
             </div>
-          )}
+          )} */}
           {/* index route */}
           <Route path='/' exact render={({match}) => (
             <Index allRants={this.state.allRants} handleSort={this.handleSort}/>
