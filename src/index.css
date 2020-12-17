@@ -1,4 +1,10 @@
 @import url('https://fonts.googleapis.com/css2?family=Bungee+Outline&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Roboto&display=swap');
+
+
+body {
+  font-family: 'Roboto', sans-serif;
+}
 
 .menu-contents > a {
   display: block;
@@ -43,6 +49,10 @@
   max-width: 800px;
 }
 
+.sort-hover {
+  color: white;
+}
+
 
 /* ----------------------------------
             Header
@@ -50,10 +60,10 @@
 .nav-links > a {
   display: inline-block;
   padding: 5px;
-  margin-top: 5%;
+  margin-top: 3%;
   color: white;
   text-decoration: none;
-  margin-right: 10px;
+  margin-right: 20px;
 }
 
 .nav-links > a:hover {
@@ -81,8 +91,80 @@
   /* background-color: black; */
 }
 
+.header-title > a {
+  text-decoration: none;
+  color: white;
+}
+
 .header-nav {
   display: flex;
   align-content: center;
   /* padding-left: 50%; */
+}
+
+
+body {
+  background-color: #222222;
+}
+
+
+/* -------------------------------
+            Rants
+------------------------------- */
+.rant {
+  background-color: white;
+  padding: 10px;
+  margin: 20px;
+}
+
+.all-rants > a {
+  text-decoration: none;
+}
+
+.rant > p, .rant > h1 {
+  text-decoration: none;
+  color: black;
+}
+.posted-by {
+  color: rgba(0,0,0,0.7);
+}
+.user {
+  font-weight: 600;
+  color: rgba(0,0,0,1)
+}
+.rant:hover {
+  border: 3px solid black;
+}
+
+/* show page */
+.show-main {
+  max-width: 700px;
+  margin: auto;
+  background-color: white;
+  padding: 20px;
+}
+
+/* .show-buttons {
+  display: inline;
+} */
+
+#comment-button {
+  margin-top: 10px;
+}
+
+.update-delete {
+  font-weight: 600;
+}
+.update-delete > a {
+  text-decoration: none;
+  color: black;
+}
+#delete-text:hover {
+  cursor: pointer;
+}
+
+.update-delete-p {
+  border: 1px dashed black;
+  max-width: 400px;
+  padding: 10px;
 }

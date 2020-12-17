@@ -175,29 +175,37 @@ export default class Rant extends Component {
 
   render() {
     return (
-      <div>
+      <div className="show-main">
         {this.state.deleted ? (
           <Redirect to='/' />
         ) : (
           this.state.showOne.post && (
             <div>
+              <p className="posted-by">Posted by <span className="user">/ {this.state.showOne.post.created_by.username} /</span> on {this.state.showOne.post.created_at}</p>
               <h1>{this.state.showOne.post.title}</h1>
-              <p>By: {this.state.showOne.post.created_by.username} at {this.state.showOne.post.created_at}</p>
+              {/* <p>By: {this.state.showOne.post.created_by.username} at {this.state.showOne.post.created_at}</p> */}
               <p>{this.state.showOne.post.body}</p>
               {this.state.owner && (
-                <div>
-                  <Link to={`/p/update/${this.state.showOne.post.id}`}>
+                <div className="show-buttons">
+                  {/* <Link to={`/p/update/${this.state.showOne.post.id}`}>
                     <button>Update</button>
                   </Link>
                   <button onClick={() => {
                     this.handleDelete(this.state.showOne.post.id)}
-                    } >Delete</button>
+                    } >Delete</button> */}
+                    <p className="update-delete-p">This is your post, would you like to 
+                    <span className="update-delete"><Link to={`/p/update/${this.state.showOne.post.id}`}> Update</Link></span> or  
+                    <span className="update-delete" onClick={() => {
+                    this.handleDelete(this.state.showOne.post.id)}
+                    } id="delete-text"> Delete</span> it?</p>
                 </div>
               )}
               {this.state.user.username && (
-                <button onClick={() => {
-                  this.setState({showInput: true})
-                }}>Add Comment</button>
+                <div className="show-buttons"  id="comment-button">
+                  <button onClick={() => {
+                    this.setState({showInput: true})
+                  }}>Add Comment</button>
+                </div>
               )}
               {this.state.showInput && (
                 <form onSubmit={this.handleAddComment}>

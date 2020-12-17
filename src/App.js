@@ -124,7 +124,9 @@ export default class App extends Component {
         <Router>
           <div className="header">
             <div className="header-title">
-              <h1>RANTZ</h1>
+              <Link to="/">
+                <h1>RANTZ</h1>
+              </Link>
             </div>
             <div className="header-nav">
               {this.state.loggedIn ? (
