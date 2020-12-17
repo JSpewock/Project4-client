@@ -174,7 +174,6 @@ body {
   max-width: 800px;
   margin: auto;
   padding: 10px;
-  /* margin: 20px; */
 }
 
 /* ------------------------------
@@ -183,7 +182,26 @@ body {
 .form > label {
   display: block;
   margin-top: 30px;
+  color: white;
 }
 .form-div {
   margin: 0 auto;
+  text-align: center;
+}
+.form-div > h1 {
+  color: white;
+}
+.submit-button {
+  display: block;
+  margin: 10px auto;
+  padding: 10px;
+  width: 200px;
+}
+.form > textarea {
+  width: 600px;
+  height: 300px;
+  resize: none;
+}
+.title-input {
+  width: 600px;
 }

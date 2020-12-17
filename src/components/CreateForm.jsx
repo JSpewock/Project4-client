@@ -81,10 +81,10 @@ export default class CreateForm extends Component {
             <h1>Speak your mind! What's got you riled up lately?</h1>
             <form onSubmit={this.handleSubmit} className="form" id="create-form">
               <label htmlFor='title'>Title:</label>
-              <input name='title' type='text' onChange={this.handleChange} value={this.state.title} />
+              <input name='title' type='text' onChange={this.handleChange} value={this.state.title} className="title-input" />
               <label htmlFor='body'>Body:</label>
-              <textarea name='body' onChange={this.handleChange}>{this.state.body}</textarea>
-              <input type='submit' value='Add Post' />
+              <textarea name='body' onChange={this.handleChange} placeholder="You don't have to be too nice but try not to get unethical either..." >{this.state.body}</textarea>
+              <input type='submit' value='Add Post' className="submit-button"/>
             </form>
           </div>
         )}
