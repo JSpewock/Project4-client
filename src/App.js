@@ -23,10 +23,11 @@ export default class App extends Component {
     this.logIn = this.logIn.bind(this)
     this.handleNewRant = this.handleNewRant.bind(this)
     this.handleDelete = this.handleDelete.bind(this)
+    this.handleSort = this.handleSort.bind(this)
   }
 
   componentDidMount() {
-    this.getAllRants()
+    this.handleSort('recent')
     //login check
     const token = localStorage.getItem('token')
     if (token) {
@@ -92,17 +93,67 @@ export default class App extends Component {
 
   handleDelete(id) {
     const fakeArray = [...this.state.allRants]
-    const findIndex = fakeArray.findIndex(post => post.id == id)
+    const findIndex = fakeArray.findIndex(post => post.id === id)
     fakeArray.splice(findIndex, 1)
     this.setState({allRants: fakeArray})
   }
 
+  handleSort(topic) {
+    fetch(baseURL + '/rantz/sort/' + topic, {
+      method: "GET",
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    }).then(res => {
+      return res.json()
+    }).then(data => {
+      const sortedRants = []
+      data.data.map(rant => {
+        rant.created_by.id = '?'
+        rant.created_by.password = ''
+        sortedRants.push(rant)
+        return ''
+      })
+      this.setState({allRants: sortedRants})
+    })
+  }
   
   render() {
     return (
       <div>
         <Router>
-          {this.state.loggedIn ? (
+          <div className="header">
+            <div className="header-title">
+              <Link to="/">
+                <h1>RANTZ</h1>
+              </Link>
+            </div>
+            <div className="header-nav">
+              {this.state.loggedIn ? (
+                <div className="nav-links">
+                  <Link to={'/p/create'}>
+                    <p>Make a New Post</p>
+                  </Link>
+                  <Link to={'/u/myposts'}>
+                    <p>My Posts</p>
+                  </Link>
+                  <Link to={'/redirect'}>
+                    <p onClick={this.killToken}>Log Out</p>
+                  </Link>
+                </div>
+              ) : (
+                <div className="nav-links">
+                  <Link to={'/u/login'}>
+                    <p>Log In</p>
+                  </Link>
+                  <Link to={'/u/signup'}>
+                    <p>Sign Up</p>
+                  </Link>
+                </div>
+              )}
+            </div>
+          </div>
+          {/* {this.state.loggedIn ? (
             <div>
               <Link to={'/p/create'}>
                 <button>Make a New Post</button>
@@ -123,10 +174,10 @@ export default class App extends Component {
                 <button>Sign Up</button>
               </Link>
             </div>
-          )}
+          )} */}
           {/* index route */}
           <Route path='/' exact render={({match}) => (
-            <Index allRants={this.state.allRants}/>
+            <Index allRants={this.state.allRants} handleSort={this.handleSort}/>
           )} />
           {/* show route */}
           <Route path='/s/:rantId' render={({match}) => (
