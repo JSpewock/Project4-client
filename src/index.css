@@ -168,3 +168,22 @@ body {
   max-width: 400px;
   padding: 10px;
 }
+
+/* user posts */
+.my-posts {
+  max-width: 800px;
+  margin: auto;
+  padding: 10px;
+  /* margin: 20px; */
+}
+
+/* ------------------------------
+            Forms
+------------------------------ */
+.form > label {
+  display: block;
+  margin-top: 30px;
+}
+.form-div {
+  margin: 0 auto;
+}

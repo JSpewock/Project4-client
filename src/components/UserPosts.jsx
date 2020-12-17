@@ -103,13 +103,13 @@ export default class UserPosts extends Component {
         {this.state.redirectLogin ? (
           <Redirect to='/u/login' />
         ) : (
-          <div>
+          <div className="my-posts">
             {this.state.userPosts.map(post => {
             
               return(
-              <div key={post.id}>
+              <div key={post.id} className="rant">
+                <p className="posted-by">Posted by <span className="user">/ You /</span> on {post.created_at}</p>
                 <h1>{post.title}</h1>
-                <p>By: {post.created_by.username} at {post.created_at}</p>
                 <p>{post.body}</p>
 
                 <Link to={`/p/update/${post.id}`}>

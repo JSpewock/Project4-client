@@ -77,13 +77,16 @@ export default class CreateForm extends Component {
         ) : this.state.done ? (
           <Redirect to='/' />
         ) : (
-          <form onSubmit={this.handleSubmit}>
-            <label htmlFor='title'>Title:</label>
-            <input name='title' type='text' onChange={this.handleChange} value={this.state.title} />
-            <label htmlFor='body'>Body:</label>
-            <input name='body' type='text' onChange={this.handleChange} value={this.state.body} />
-            <input type='submit' value='Add Post' />
-          </form>
+          <div className="form-div">
+            <h1>Speak your mind! What's got you riled up lately?</h1>
+            <form onSubmit={this.handleSubmit} className="form" id="create-form">
+              <label htmlFor='title'>Title:</label>
+              <input name='title' type='text' onChange={this.handleChange} value={this.state.title} />
+              <label htmlFor='body'>Body:</label>
+              <textarea name='body' onChange={this.handleChange}>{this.state.body}</textarea>
+              <input type='submit' value='Add Post' />
+            </form>
+          </div>
         )}
       </div>
     )
