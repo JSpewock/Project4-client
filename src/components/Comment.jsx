@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 
-const baseURL = process.env.REACT_APP_BASE_URL || 'http://localhost:8000'
+const baseURL = process.env.REACT_APP_API_URL || 'http://localhost:8000'
 
 export default class Comment extends Component {
   constructor(props) {

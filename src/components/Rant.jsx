@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import {Link, Redirect} from 'react-router-dom'
 import Comment from './Comment'
 
-const baseURL = process.env.REACT_APP_BASE_URL || 'http://localhost:8000'
+const baseURL = process.env.REACT_APP_API_URL || 'http://localhost:8000'
 
 export default class Rant extends Component {
   constructor(props) {

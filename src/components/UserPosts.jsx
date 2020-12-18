@@ -3,7 +3,7 @@ import {Redirect, Link} from 'react-router-dom'
 
 
 
-const baseURL = process.env.REACT_APP_BASE_URL || 'http://localhost:8000'
+const baseURL = process.env.REACT_APP_API_URL || 'http://localhost:8000'
 
 export default class UserPosts extends Component {
   constructor(props) {

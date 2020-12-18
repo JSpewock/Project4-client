@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import {Link} from 'react-router-dom'
 
-const baseURL = process.env.REACT_APP_BASE_URL || 'http://localhost:8000'
+const baseURL = process.env.REACT_APP_API_URL || 'http://localhost:8000'
 
 export default class Index extends Component {
   constructor(props) {

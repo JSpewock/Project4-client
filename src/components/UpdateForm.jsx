@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import { Redirect } from 'react-router-dom'
 
 
-const baseURL = process.env.REACT_APP_BASE_URL || 'http://localhost:8000'
+const baseURL = process.env.REACT_APP_API_URL || 'http://localhost:8000'
 
 export default class UpdateForm extends Component {
   constructor(props) {
