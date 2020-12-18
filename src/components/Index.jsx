@@ -27,6 +27,7 @@ export default class Index extends Component {
   }
 
   handleSort(topicChoice) {
+    //took this from https://flaviocopes.com/how-to-uppercase-first-letter-javascript/
     const topicUppercase = topicChoice.charAt(0).toUpperCase() + topicChoice.slice(1)
     this.setState({topic: topicUppercase})
     this.props.handleSort(topicChoice)

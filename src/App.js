@@ -8,7 +8,14 @@ import UserPosts from './components/UserPosts'
 import UpdateForm from './components/UpdateForm'
 import {BrowserRouter as Router, Route, Link, Redirect} from 'react-router-dom'
 
-const baseURL = process.env.REACT_APP_BASE_URL || 'http://localhost:8000'
+// const baseURL = process.env.REACT_APP_BASE_URL || 'http://localhost:8000'
+const baseURL = ''
+if (process.env.REACT_APP_BASE_URL) {
+  baseURL = process.env.REACT_APP_BASE_URL
+} else {
+  baseURL = 'http://localhost:8000'
+}
+console.log(baseURL)
 
 export default class App extends Component {
   constructor(props) {
@@ -138,6 +145,7 @@ export default class App extends Component {
   render() {
     return (
       <div>
+        {/* I learned how to use react router from https://www.youtube.com/watch?v=XRfD8xIOroA&feature=emb_rel_end */}
         <Router>
           <div className="header">
             <div className="header-title">
@@ -170,28 +178,7 @@ export default class App extends Component {
               )}
             </div>
           </div>
-          {/* {this.state.loggedIn ? (
-            <div>
-              <Link to={'/p/create'}>
-                <button>Make a New Post</button>
-              </Link>
-              <Link to={'/u/myposts'}>
-                <button>My Posts</button>
-              </Link>
-              <Link to={'/redirect'}>
-                <button onClick={this.killToken}>Log Out</button>
-              </Link>
-            </div>
-          ) : (
-            <div>
-              <Link to={'/u/login'}>
-                <button>Log In</button>
-              </Link>
-              <Link to={'/u/signup'}>
-                <button>Sign Up</button>
-              </Link>
-            </div>
-          )} */}
+          
           {/* index route */}
           <Route path='/' exact render={({match}) => (
             <Index allRants={this.state.allRants} handleSort={this.handleSort}/>
