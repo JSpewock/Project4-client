@@ -8,14 +8,14 @@ import UserPosts from './components/UserPosts'
 import UpdateForm from './components/UpdateForm'
 import {BrowserRouter as Router, Route, Link, Redirect} from 'react-router-dom'
 
-// const baseURL = process.env.REACT_APP_BASE_URL || 'http://localhost:8000'
-const baseURL = ''
-if (process.env.REACT_APP_BASE_URL) {
-  baseURL = process.env.REACT_APP_BASE_URL
-} else {
-  baseURL = 'http://localhost:8000'
-}
-console.log(baseURL)
+const baseURL = process.env.REACT_APP_API_URL || 'http://localhost:8000'
+// const baseURL = ''
+// if (process.env.REACT_APP_API_URL) {
+//   baseURL = process.env.REACT_APP_API_URL
+// } else {
+//   baseURL = 'http://localhost:8000'
+// }
+// console.log(baseURL)
 
 export default class App extends Component {
   constructor(props) {
