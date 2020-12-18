@@ -11,4 +11,6 @@ Next, I had to choose something I had never used before. For this, I chose to us
 There is really only one issue that I didn't have time to fix and that is the jwts expire every hour but when your jwt expires, the content in the header does not accurately reflect that you are no longer signed in. This is something that doesn't hinder the app all that much, but it's a notable flaw.
 
 # Link to my Project
-You can find the deployed app [here](https://project-4-client-rantz.herokuapp.com/) and you can find the repository for my Flask API [here](https://github.com/JSpewock/Project4-api) Enjoy!
+You can find the deployed app [here](https://project-4-client-rantz.herokuapp.com/) and you can find the repository for my Flask API [here](https://github.com/JSpewock/Project4-api) 
+
+Enjoy!
